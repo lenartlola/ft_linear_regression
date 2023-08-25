@@ -47,3 +47,24 @@ class LinearRegression:
     def predict(self, mileage, theta0, theta1):
       # y = b0 + b1 * x
       return theta0 + (theta1 * mileage)
+
+def AnimateRegression(X, y, learning_rate, num_iterations):
+    model = LinearRegression(learning_rate, num_iterations)
+
+    fig, ax = plt.subplots()
+    ax.scatter(X, y, color='blue', marker='o', label='Data')
+    line, = ax.plot([], [], color='red', label='Regression Line')
+    ax.legend()
+
+    def init():
+        line.set_data([], [])
+        return line,
+
+    def animate(i):
+        model.fit(X, y, verbose=False)
+        y_pred = [model.predict(mileage, model.theta0, model.theta1) for mileage in X]
+        line.set_data(X, y_pred)
+        return line,
+
+    ani = animation.FuncAnimation(fig, animate, init_func=init, frames=num_iterations, interval=500, blit=True)
+    plt.show()

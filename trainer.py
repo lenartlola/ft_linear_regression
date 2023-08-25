@@ -1,4 +1,4 @@
-from linear_regression import LinearRegression
+from linear_regression import LinearRegression, AnimateRegression
 import sys
 import pandas as pd
 import numpy as np
@@ -68,7 +68,7 @@ def main():
     normalized_price, mean_price, std_price = normalize_data(price)
 
     model = LinearRegression(learning_rate=0.01, n_iterations=10000)
-    model.fit(normalized_km, normalized_price, verbose)
+    #model.fit(normalized_km, normalized_price, verbose)
 
     # Denormalize the found thetas
     denorm_theta0, denorm_theta1 = denormalize_theta(model.theta0, \
@@ -76,6 +76,9 @@ def main():
 
     # Write the found thetas to a file
     write_thetas(denorm_theta0, denorm_theta1)
+
+    # Animate regression
+    animate = AnimateRegression(normalized_km, normalized_price, learning_rate=0.01, num_iterations=1000)
 
 if __name__ == '__main__':
 	main()
