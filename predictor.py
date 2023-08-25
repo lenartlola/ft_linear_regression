@@ -2,6 +2,7 @@ from linear_regression import LinearRegression
 import os
 import sys
 
+
 def main():
     file_path = "thetas.txt"
     t0 = 0.0
@@ -18,11 +19,12 @@ def main():
     except:
         print("Error: maybe a wrong format.")
         sys.exit(127)
-    
+
     model = LinearRegression()
     predicted = model.predict(mil, t0, t1)
 
     print("The predicted price: ", round(predicted, 2))
+
 
 if __name__ == "__main__":
     main()

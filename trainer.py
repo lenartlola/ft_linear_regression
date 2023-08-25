@@ -1,4 +1,4 @@
-from linear_regression import LinearRegression, AnimateRegression
+from linear_regression import LinearRegression
 import sys
 import pandas as pd
 import numpy as np
@@ -12,10 +12,12 @@ def normalize_data(data):
     normalized_data = (data - mean) / std
     return normalized_data, mean, std
 
+
 def denormalize_theta(theta0, theta1, mean_x, std_x, mean_y, std_y):
     denorm_theta0 = mean_y + theta0 * std_y - theta1 * (mean_x * std_y / std_x)
     denorm_theta1 = theta1 * (std_y / std_x)
     return denorm_theta0, denorm_theta1
+
 
 def read_data():
     try:
@@ -27,6 +29,7 @@ def read_data():
     Y = np.array(data["price"])
 
     return X, Y
+
 
 def write_thetas(t0, t1):
     file_path = "thetas.txt"
@@ -43,24 +46,18 @@ def write_thetas(t0, t1):
         print("Couldn't create a new file thetas.txt")
         raise
 
-   # f.write(str(model.theta0))
-   # f.write("\n")
-   # f.write(str(model.theta1))
-   # f.write("\n")
-
-   # f.close()
 
 def parse_arg():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--verbose', action='store_true', \
-            help='Enable verbose output')
+    parser.add_argument('--verbose', action='store_true', help='Enable verbose output')
     args = parser.parse_args()
 
     verbose = args.verbose
     return verbose
 
+
 def main():
-    verbose = parse_arg() 
+    verbose = parse_arg()
     print("Arg: ", verbose)
     km, price = read_data()
 
@@ -68,17 +65,14 @@ def main():
     normalized_price, mean_price, std_price = normalize_data(price)
 
     model = LinearRegression(learning_rate=0.01, n_iterations=10000)
-    #model.fit(normalized_km, normalized_price, verbose)
+    model.fit(normalized_km, normalized_price, verbose)
 
     # Denormalize the found thetas
-    denorm_theta0, denorm_theta1 = denormalize_theta(model.theta0, \
-            model.theta1, mean_km, std_km, mean_price, std_price)
+    denorm_theta0, denorm_theta1 = denormalize_theta(model.theta0, model.theta1, mean_km, std_km, mean_price, std_price)
 
     # Write the found thetas to a file
     write_thetas(denorm_theta0, denorm_theta1)
 
-    # Animate regression
-    animate = AnimateRegression(normalized_km, normalized_price, learning_rate=0.01, num_iterations=1000)
 
 if __name__ == '__main__':
-	main()
+    main()
