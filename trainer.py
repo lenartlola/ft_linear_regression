@@ -64,7 +64,7 @@ def main():
     normalized_km, mean_km, std_km = normalize_data(km)
     normalized_price, mean_price, std_price = normalize_data(price)
 
-    model = LinearRegression(learning_rate=0.01, n_iterations=10000)
+    model = LinearRegression(learning_rate=0.01, n_iterations=1000)
     model.fit(normalized_km, normalized_price, verbose)
 
     # Denormalize the found thetas

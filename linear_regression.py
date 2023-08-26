@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+import imageio
 
 
 class LinearRegression:
@@ -28,11 +29,12 @@ class LinearRegression:
 
     def fit(self, X, y, verbose=False):
         n = len(X)
-        fix, ax = plt.subplots()
+        fig, ax = plt.subplots()
         ax.scatter(X, y, color="blue", marker='o', label="Data")
         line, = ax.plot([],[], color="red", label="Regression line")
         ax.legend()
         x_range = np.linspace(min(X), max(X), num=100)
+        frames = []
 
         for _ in range(self.n_iterations):
             pred_y, coe0, coe1, loss = self._gradient_descent(n, X, y)
@@ -50,8 +52,13 @@ class LinearRegression:
                 line.set_data(x_range, y_range)
                 ax.set_title(f"Iteration {_}, Loss: {loss:.2f}")
                 plt.pause(0.1)
+                fig.canvas.draw()
+                frame_data = np.frombuffer(fig.canvas.tostring_rgb(), dtype=np.uint8)
+                frame_data = frame_data.reshape(fig.canvas.get_width_height()[::-1] + (3,))
+                frames.append(frame_data)
 
         if verbose:
+            imageio.mimsave("animation.gif", frames, duration=0.7)
             print(f"Final theta0: {self.theta0}, Final theta1: {self.theta1}")
 
     def predict(self, mileage, theta0, theta1):
