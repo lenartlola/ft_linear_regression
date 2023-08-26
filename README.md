@@ -4,8 +4,6 @@ This repository contains a simple implementation of linear regression to predict
 
 ![Regression frames](./animation.gif)
 
-<img src="animation.gif" alt="Animated Scatter Plot">
-
 ## Installation
 
 First, make sure you have Python installed on your system. Then, install the required dependencies using pip:
